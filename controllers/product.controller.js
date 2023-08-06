@@ -10,10 +10,12 @@ const newProduct = async (req, res, next) => {
     });
 }
 
-const getProducts = (req, res, next) => {
+const getProducts = async (req, res, next) => {
+    const products = await Product.find();
     res.status(200).json({
         success: true,
-        message: 'This route will show all products in database.'
+        count: products.length,
+        products
     });
 }
 

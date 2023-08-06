@@ -44,6 +44,7 @@ const productSchema = new mongoose.Schema({
                 'Habits/Chaussures',
                 'Livres',
                 'Maison',
+                'Ordinateurs',
                 'Sports'
             ],
             message: 'Veuillez choisir une catégorie pour le produit'
