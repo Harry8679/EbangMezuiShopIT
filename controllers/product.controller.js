@@ -49,6 +49,7 @@ const getSingleProduct = async (req, res, next) => {
     }
 }
 
+// Update a Product => /api/v1/products/:id
 const updateProduct = async (req, res, next) => {
     try {
         let product = await Product.findById(req.params.id);
@@ -75,4 +76,27 @@ const updateProduct = async (req, res, next) => {
     }
 }
 
-module.exports = { getProducts, newProduct, getSingleProduct, updateProduct };
+// Delete a Product => /api/v1/products/:id
+const deleteProduct = async (req, res, next) => {
+    try {
+        const product = await Product.findById(req.params.id);
+
+        if (!product) {
+            return res.status(404).json({
+                success: false,
+                message: 'Produit non trouvé'
+            });
+        }
+
+        await Product.deleteOne();
+
+        res.status(200).json({
+            success: true,
+            message: 'Produit supprimé avec succès !'
+        });
+    } catch (error) {
+        res.json(error.message);
+    }
+}
+
+module.exports = { getProducts, newProduct, getSingleProduct, updateProduct, deleteProduct };
