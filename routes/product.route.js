@@ -6,7 +6,7 @@ const { getProducts, newProduct, getSingleProduct, updateProduct, deleteProduct 
 router.route('/products').get(getProducts);
 router.route('/admin/products').post(newProduct);
 router.route('/products/:id').get(getSingleProduct);
-router.route('/products/:id').put(updateProduct);
-router.route('/products/:id').delete(deleteProduct);
+router.route('/admin/products/:id').put(updateProduct);
+router.route('/admin/products/:id').delete(deleteProduct);
 
 module.exports = router;
