@@ -1,29 +1,22 @@
 const ErrorHandler = require('../utils/errorHandler.util');
 
 module.exports = (err, req, res, next) => {
-    err.statusCode = err.statusCode || 500;
-    // err.message = err.message || 'Erreur Interne au Serveur';
+    let error = {
+        statusCode: err?.statusCode || 500,
+        message: err?.message || 'Internal Server Error'
+    };
 
     if (process.env.NODE_ENV === 'DEVELOPMENT') {
-        res.status(err.statusCode).json({
-            success: false,
+        res.status(error.statusCode).json({
+            message: error.message,
             error: err,
-            errMessage: err.message,
-            stack: err.stack
+            stack: err?.stack
         });
     }
 
     if (process.env.NODE_ENV === 'PRODUCTION') {
-        let error = {...err};
-        res.status(err.statusCode).json({
-            success: false,
-            message: error.message || 'Erreur Interne au serveur'
+        res.status(error.statusCode).json({
+            message: error.message
         });
     }
-
-
-    res.status(err.statusCode).json({
-        success: false,
-        error: err.stack
-    });
 }
