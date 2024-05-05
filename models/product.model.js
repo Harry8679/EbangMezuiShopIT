@@ -5,7 +5,7 @@ const productSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Veuillez entrer le nom du produit'],
         trim: true,
-        maxLength: [100, 'Le nom du produit ne peut excéder les 100 caractères.']
+        maxLength: [200, 'Le nom du produit ne peut excéder les 100 caractères.']
     },
     price: {
         type: Number,
@@ -16,6 +16,10 @@ const productSchema = new mongoose.Schema({
     description: {
         type: String,
         required: [true, 'Veuillez entrer la description du produit'],
+    },
+    ratings: {
+        type: Number,
+        default: 0
     },
     images: [
         {
@@ -57,8 +61,8 @@ const productSchema = new mongoose.Schema({
     stock: {
         type: Number,
         required: [true, 'Entrez le stock du produit'],
-        maxLength: [5, 'Le nombre ne peut excéder 5 chiffres'],
-        default: 0
+        // maxLength: [5, 'Le nombre ne peut excéder 5 chiffres'],
+        // default: 0
     },
     numberOfViews: {
         type: Number,
@@ -66,8 +70,13 @@ const productSchema = new mongoose.Schema({
     },
     reviews: [
         {
-            name: {
-                type: String,
+            // name: {
+            //     type: String,
+            //     required: true
+            // },
+            user: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'User',
                 required: true
             },
             rating: {
@@ -75,15 +84,15 @@ const productSchema = new mongoose.Schema({
                 required: true
             },
             comment: {
-                type: 'String',
+                type: String,
                 require: true
             }
         }
     ],
     createdAt: {
-        type: 'Date',
+        type: Date,
         default: Date.now
     }
-});
+}, { timestamps: true });
 
 module.exports = mongoose.model('Product', productSchema);
