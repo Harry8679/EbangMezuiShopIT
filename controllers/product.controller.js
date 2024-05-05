@@ -1,7 +1,7 @@
 const Product = require('../models/product.model');
 const ErrorHandler = require('../utils/errorHandler.util');
 
-// Create a new Product => /api/v1/products/new
+// Create a new Product => /api/v1/admin/products
 const newProduct = async (req, res, next) => {
     try {
         const product = await Product.create(req.body);
