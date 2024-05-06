@@ -1,4 +1,5 @@
 const Product = require('../models/product.model');
+const APIFilters = require('../utils/apiFilter.util');
 const ErrorHandler = require('../utils/errorHandler.util');
 const asyncHanlder = require('express-async-handler');
 
@@ -19,10 +20,14 @@ const newProduct = asyncHanlder(async (req, res, next) => {
 // Get All Products => /api/v1/products
 const getProducts = asyncHanlder(async (req, res, next) => {
     try {
-        const products = await Product.find();
+        const apiFilters = new APIFilters(Product, req.query).search();
+        let products = await apiFilters.query;
+        let filteredProductsCount = products.length;
+        // const products = await Product.find();
         res.status(200).json({
             success: true,
-            count: products.length,
+            filteredProductsCount,
+            // count: products.length,
             products
         });
     } catch (error) {
