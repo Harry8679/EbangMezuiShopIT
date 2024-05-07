@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
 
 const userSchema = new mongoose.Schema({
     name: {
@@ -28,5 +29,14 @@ const userSchema = new mongoose.Schema({
     resetPasswordToken: String,
     resetPasswordExpire: Date,
 }, { timestamps: true });
+
+// Encrypt the password before saving the user
+userSchema.pre('save', async function (next) {
+    if (!this.isModified('password')) {
+        next();
+    }
+
+    this.password = await bcrypt.hash(this.password, 10);
+});
 
 module.exports = mongoose.model('User', userSchema);
