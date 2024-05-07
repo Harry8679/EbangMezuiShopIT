@@ -20,14 +20,19 @@ const newProduct = asyncHanlder(async (req, res, next) => {
 // Get All Products => /api/v1/products
 const getProducts = asyncHanlder(async (req, res, next) => {
     try {
-        const apiFilters = new APIFilters(Product, req.query).search();
+        const resPerPage = 4;
+        const apiFilters = new APIFilters(Product, req.query).search().filters();
+
         let products = await apiFilters.query;
         let filteredProductsCount = products.length;
+
+        apiFilters.pagination(resPerPage);
+        products = await apiFilters.query.clone();
         // const products = await Product.find();
         res.status(200).json({
             success: true,
+            resPerPage,
             filteredProductsCount,
-            // count: products.length,
             products
         });
     } catch (error) {
