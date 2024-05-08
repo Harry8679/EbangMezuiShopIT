@@ -1,5 +1,6 @@
 const asyncHanlder = require('express-async-handler');
 const User = require('../models/user.model');
+const ErrorHandler = require('../utils/errorHandler.util');
 
 const register = asyncHanlder(async(req, res) => {
     const { name, email, password } = req.body;
@@ -14,4 +15,8 @@ const register = asyncHanlder(async(req, res) => {
     });
 });
 
-module.exports = { register };
+const login = asyncHanlder(async(req, res, next) => {
+    res.send('Login');
+});
+
+module.exports = { register, login };
