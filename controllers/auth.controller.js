@@ -1,6 +1,7 @@
 const asyncHanlder = require('express-async-handler');
 const User = require('../models/user.model');
 const ErrorHandler = require('../utils/errorHandler.util');
+const sendToken = require('../utils/sendToken.util');
 
 const register = asyncHanlder(async(req, res) => {
     const { name, email, password } = req.body;
@@ -13,6 +14,7 @@ const register = asyncHanlder(async(req, res) => {
         user,
         // token
     });
+    sendToken(user, 201, res);
 });
 
 const login = asyncHanlder(async(req, res, next) => {
@@ -38,7 +40,7 @@ const login = asyncHanlder(async(req, res, next) => {
 
     const token = user.getJwtToken();
 
-    res.status(200).json({ message: 'Login successful', token });
+    sendToken(user, 200, res);
 });
 
 module.exports = { register, login };
