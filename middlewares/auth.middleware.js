@@ -9,7 +9,7 @@ const protected = asyncHanlder(async (req, res, next) => {
         const token = req.cookies.token;
         if (!token) {
             res.status(401);
-            throw new ErrorHandler('Not authorized 1, please login');
+            throw new ErrorHandler('Not authorized, please login');
         }
 
         // Verify token
@@ -25,9 +25,19 @@ const protected = asyncHanlder(async (req, res, next) => {
         next();
     } catch (error) {
         res.status(401);
-        throw new ErrorHandler('Not Authorized 2, please login');
+        throw new ErrorHandler('Not Authorized, please login');
     }
 });
+
+const authorizeRoles = (...roles) => {
+    return (req, res, next) => {
+        if (!roles.includes(req.user.role)) {
+            return next(new ErrorHandler(`Role ${req.user.role} is not allowed to access this resource.`, 403));
+        }
+
+        next();
+    };
+};
 
 // Check if user is authenticated or not
 const isAuthenticated = asyncHanlder(async(req, res, next) => {
@@ -50,4 +60,4 @@ const isAuthenticated = asyncHanlder(async(req, res, next) => {
     next();
 });
 
-module.exports = { isAuthenticated, protected };
+module.exports = { isAuthenticated, protected, authorizeRoles };
