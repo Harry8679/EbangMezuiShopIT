@@ -61,8 +61,6 @@ const productSchema = new mongoose.Schema({
     stock: {
         type: Number,
         required: [true, 'Entrez le stock du produit'],
-        // maxLength: [5, 'Le nombre ne peut excéder 5 chiffres'],
-        // default: 0
     },
     numberOfViews: {
         type: Number,
@@ -70,10 +68,6 @@ const productSchema = new mongoose.Schema({
     },
     reviews: [
         {
-            // name: {
-            //     type: String,
-            //     required: true
-            // },
             user: {
                 type: mongoose.Schema.Types.ObjectId,
                 ref: 'User',
@@ -89,6 +83,11 @@ const productSchema = new mongoose.Schema({
             }
         }
     ],
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+    },
     createdAt: {
         type: Date,
         default: Date.now

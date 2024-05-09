@@ -6,6 +6,7 @@ const asyncHanlder = require('express-async-handler');
 // Create a new Product => /api/v1/admin/products
 const newProduct = asyncHanlder(async (req, res, next) => {
     try {
+        req.body.user = req.user._id;
         const product = await Product.create(req.body);
 
         res.status(201).json({
