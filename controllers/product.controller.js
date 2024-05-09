@@ -2,6 +2,7 @@ const Product = require('../models/product.model');
 const APIFilters = require('../utils/apiFilter.util');
 const ErrorHandler = require('../utils/errorHandler.util');
 const asyncHanlder = require('express-async-handler');
+// const crypto = require('crypto');
 
 // Create a new Product => /api/v1/admin/products
 const newProduct = asyncHanlder(async (req, res, next) => {
