@@ -25,7 +25,7 @@ const login = asyncHanlder(async(req, res, next) => {
     }
 
     // Find the User in the database
-    const user = await User.findOne({ email }).select('password');
+    const user = await User.findOne({ email }).select('+password');
 
     if (!user) {
         return next('Invalid email or password', 401);
@@ -38,9 +38,30 @@ const login = asyncHanlder(async(req, res, next) => {
         return next(new ErrorHandler('Invalid email or password', 401));
     }
 
-    const token = user.getJwtToken();
+    // const token = user.getJwtToken();
 
     sendToken(user, 200, res);
 });
 
-module.exports = { register, login };
+const logout = asyncHanlder(async(req, res) => {
+    res.cookie('token'), '', {
+        expires: new Date(Date.now()),
+        httpOnly: true
+    }
+
+    res.status(200).json({ message:  'Logged out' });
+});
+
+// ----------- Logout --------------------
+// const logout = asyncHanlder(async(req, res) => {
+//     res.cookie('token', '', {
+//         path: '/',
+//         httpOnly: true,
+//         expires: new Date(0),
+//         sameSite: 'none',
+//         secure: true
+//     });
+
+//     return res.status(200).json({ message: 'Logout Successful' })
+// });
+module.exports = { register, login, logout };
